@@ -2,6 +2,7 @@ package br.com.raizesdonordeste.api.domain.pedido;
 
 import br.com.raizesdonordeste.api.domain.cliente.Cliente;
 import br.com.raizesdonordeste.api.domain.pagamento.Pagamento;
+import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.enums.CanalPedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
@@ -31,11 +32,12 @@ public class Pedido {
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<Pagamento> pagamentos;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "metodo_pagamento")
+    private MetodoPagamento metodoPagamento;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "canal_venda")
