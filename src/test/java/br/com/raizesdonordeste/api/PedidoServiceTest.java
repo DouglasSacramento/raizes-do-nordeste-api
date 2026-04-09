@@ -9,6 +9,7 @@ import br.com.raizesdonordeste.api.domain.pedido.Pedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.CanalPedido;
 import br.com.raizesdonordeste.api.domain.produto.Produto;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevida;
 import br.com.raizesdonordeste.api.infrastructure.repository.ClienteRepository;
 import br.com.raizesdonordeste.api.infrastructure.repository.PedidoRepository;
 import br.com.raizesdonordeste.api.infrastructure.repository.ProdutoRepository;
@@ -92,7 +93,7 @@ class PedidoServiceTest {
                 itens
         );
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(PedidoSolicitacaoTrocoIndevida.class, () -> {
             pedidoService.criarPedido(dto);
         });
 

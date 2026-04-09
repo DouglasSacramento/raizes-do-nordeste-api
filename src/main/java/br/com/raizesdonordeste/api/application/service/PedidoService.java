@@ -9,6 +9,7 @@ import br.com.raizesdonordeste.api.domain.pedido.Pedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;
 import br.com.raizesdonordeste.api.domain.produto.Produto;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevida;
 import br.com.raizesdonordeste.api.infrastructure.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class PedidoService {
 
     public Pedido criarPedido(PedidoRequestDTO dados) {
         if (dados.exigeTroco() && dados.metodoPagamento() != MetodoPagamento.DINHEIRO) {
-            throw new IllegalArgumentException("Troco só pode ser solicitado para pagamentos em DINHEIRO.");
+            throw new PedidoSolicitacaoTrocoIndevida("Troco só pode ser solicitado para pagamentos em DINHEIRO.");
         }
 
         Pedido novoPedido = new Pedido();
