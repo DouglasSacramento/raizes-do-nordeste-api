@@ -1,0 +1,74 @@
+package br.com.raizesdonordeste.api.application.service;
+
+import br.com.raizesdonordeste.api.application.dto.ItemCarrinhoRequestDTO;
+import br.com.raizesdonordeste.api.application.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.domain.cliente.Cliente;
+import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
+import br.com.raizesdonordeste.api.domain.pedido.ItemPedido;
+import br.com.raizesdonordeste.api.domain.pedido.Pedido;
+import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;
+import br.com.raizesdonordeste.api.domain.produto.Produto;
+import br.com.raizesdonordeste.api.domain.unidade.Unidade;
+import br.com.raizesdonordeste.api.infrastructure.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class PedidoService {
+
+    private final PedidoRepository pedidoRepository;
+    private final ItemPedidoRepository itemPedidoRepository;
+    private final UnidadeRepository unidadeRepository;
+    private final ClienteRepository clienteRepository;
+    private final ProdutoRepository produtoRepository;
+
+    public Pedido criarPedido(PedidoRequestDTO dados) {
+        if (dados.exigeTroco() && dados.metodoPagamento() != MetodoPagamento.DINHEIRO) {
+            throw new IllegalArgumentException("Troco só pode ser solicitado para pagamentos em DINHEIRO.");
+        }
+
+        Pedido novoPedido = new Pedido();
+        Unidade unidade = unidadeRepository.findById(dados.unidadeId())
+                .orElseThrow();
+        Cliente cliente = clienteRepository.findById(dados.clienteId())
+                .orElseThrow();
+
+        novoPedido.setCanalPedido(dados.canal());
+        novoPedido.setMetodoPagamento(dados.metodoPagamento());
+        novoPedido.setExigeTroco(dados.exigeTroco());
+        novoPedido.setUnidade(unidade);
+        novoPedido.setCliente(cliente);
+        novoPedido.setStatusPedido(StatusPedido.RECEBIDO);
+
+        processarCarrinhoEValorTotal(novoPedido, dados.carrinho());
+
+        return pedidoRepository.save(novoPedido);
+    }
+
+    private void processarCarrinhoEValorTotal(Pedido pedido, List<ItemCarrinhoRequestDTO> carrinhoDto) {
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        List<ItemPedido> itensDoPedido = new ArrayList<>();
+
+        for (ItemCarrinhoRequestDTO itemDto : carrinhoDto) {
+            Produto produto = produtoRepository.findById(itemDto.produtoId()).orElseThrow();
+
+            ItemPedido item = new ItemPedido();
+            item.setProduto(produto);
+            item.setQuantidade(itemDto.quantidade());
+            item.setPrecoUnitario(produto.getPrecoAtual());
+            item.setPedido(pedido);
+
+            BigDecimal subtotal = produto.getPrecoAtual().multiply(new BigDecimal(itemDto.quantidade()));
+            valorTotal = valorTotal.add(subtotal);
+
+            itensDoPedido.add(item);
+        }
+        pedido.setItens(itensDoPedido);
+        pedido.setValorTotal(valorTotal);
+    }
+}
