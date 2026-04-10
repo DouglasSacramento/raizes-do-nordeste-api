@@ -1,7 +1,7 @@
 package br.com.raizesdonordeste.api.application.service;
 
-import br.com.raizesdonordeste.api.application.dto.ItemCarrinhoRequestDTO;
-import br.com.raizesdonordeste.api.application.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.application.service.dto.ItemCarrinhoRequestDTO;
+import br.com.raizesdonordeste.api.application.service.dto.PedidoRequestDTO;
 import br.com.raizesdonordeste.api.domain.cliente.Cliente;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.ItemPedido;
@@ -71,5 +71,30 @@ public class PedidoService {
         }
         pedido.setItens(itensDoPedido);
         pedido.setValorTotal(valorTotal);
+    }
+
+    public Pedido atualizarStatus(Long pedidoId, StatusPedido novoStatus) {
+        Pedido pedido = pedidoRepository.findById(pedidoId).orElseThrow();
+        StatusPedido atualStatus = pedido.getStatusPedido();
+
+        if (atualStatus == StatusPedido.CANCELADO || atualStatus == StatusPedido.ENTREGUE) {
+            throw new RuntimeException("Pedido indisponivel.");
+        }
+
+        if (atualStatus == StatusPedido.RECEBIDO && !(novoStatus == StatusPedido.COZINHA || novoStatus == StatusPedido.CANCELADO)) {
+            throw new RuntimeException("Pedido RECEBIDO só pode ser alterado para COZINHA ou CANCELADO.");
+        }
+
+        if (atualStatus == StatusPedido.COZINHA && !(novoStatus == StatusPedido.PRONTO || novoStatus == StatusPedido.CANCELADO)) {
+            throw new RuntimeException("Pedido COZINHA só pode ser alterado para PRONTO ou CANCELADO.");
+        }
+
+        if (atualStatus == StatusPedido.PRONTO && !(novoStatus == StatusPedido.ENTREGUE || novoStatus == StatusPedido.CANCELADO)) {
+            throw new RuntimeException("Pedido PRONTO só pode ser alterado para ENTREGUE ou CANCELADO.");
+        }
+
+        pedido.setStatusPedido(novoStatus);
+
+        return pedidoRepository.save(pedido);
     }
 }
