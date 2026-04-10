@@ -1,7 +1,7 @@
 package br.com.raizesdonordeste.api;
 
-import br.com.raizesdonordeste.api.application.dto.ItemCarrinhoRequestDTO;
-import br.com.raizesdonordeste.api.application.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.application.service.dto.ItemCarrinhoRequestDTO;
+import br.com.raizesdonordeste.api.application.service.dto.PedidoRequestDTO;
 import br.com.raizesdonordeste.api.application.service.PedidoService;
 import br.com.raizesdonordeste.api.domain.cliente.Cliente;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
