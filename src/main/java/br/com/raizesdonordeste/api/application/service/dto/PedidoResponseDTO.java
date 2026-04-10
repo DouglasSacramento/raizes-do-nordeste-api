@@ -1,4 +1,4 @@
-package br.com.raizesdonordeste.api.application.dto;
+package br.com.raizesdonordeste.api.application.service.dto;
 
 import br.com.raizesdonordeste.api.domain.pedido.Pedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;

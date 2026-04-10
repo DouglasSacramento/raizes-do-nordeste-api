@@ -1,4 +1,4 @@
-package br.com.raizesdonordeste.api.application.dto;
+package br.com.raizesdonordeste.api.application.service.dto;
 
 import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.enums.CanalPedido;
