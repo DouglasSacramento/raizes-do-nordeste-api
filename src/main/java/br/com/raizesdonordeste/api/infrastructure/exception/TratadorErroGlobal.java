@@ -1,6 +1,7 @@
 package br.com.raizesdonordeste.api.infrastructure.exception;
 
-import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevida;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class TratadorErroGlobal {
 
-    @ExceptionHandler(PedidoSolicitacaoTrocoIndevida.class)
-    public ProblemDetail handleSolicitacaoTrocoIndevido(PedidoSolicitacaoTrocoIndevida ex) {
+    @ExceptionHandler(PedidoSolicitacaoTrocoIndevidaException.class)
+    public ProblemDetail handleSolicitacaoTrocoIndevido(PedidoSolicitacaoTrocoIndevidaException ex) {
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problem.setDetail(ex.getMessage());
         problem.setTitle("Solicitação Troco Indevida");
@@ -42,6 +43,16 @@ public class TratadorErroGlobal {
                                 -> mensagemAntiga + " e " + mensagemNova
                 ));
         problem.setProperty("campoInvalido", camposComErro);
+
+        return problem;
+    }
+
+    @ExceptionHandler(TransicaoStatusInvalidaException.class)
+    public ProblemDetail handleErrosDeMudancaDeStatusDePedidos(TransicaoStatusInvalidaException ex){
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problem.setTitle("Transição status inválida");
+        problem.setDetail(ex.getMessage());
+        problem.setProperty("dataHora", LocalDateTime.now());
 
         return problem;
     }

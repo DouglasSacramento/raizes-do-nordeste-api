@@ -9,7 +9,8 @@ import br.com.raizesdonordeste.api.domain.pedido.Pedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;
 import br.com.raizesdonordeste.api.domain.produto.Produto;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
-import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevida;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
 import br.com.raizesdonordeste.api.infrastructure.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class PedidoService {
 
     public Pedido criarPedido(PedidoRequestDTO dados) {
         if (dados.exigeTroco() && dados.metodoPagamento() != MetodoPagamento.DINHEIRO) {
-            throw new PedidoSolicitacaoTrocoIndevida("Troco só pode ser solicitado para pagamentos em DINHEIRO.");
+            throw new PedidoSolicitacaoTrocoIndevidaException("Troco só pode ser solicitado para pagamentos em DINHEIRO.");
         }
 
         Pedido novoPedido = new Pedido();
@@ -78,19 +79,19 @@ public class PedidoService {
         StatusPedido atualStatus = pedido.getStatusPedido();
 
         if (atualStatus == StatusPedido.CANCELADO || atualStatus == StatusPedido.ENTREGUE) {
-            throw new RuntimeException("Pedido indisponivel.");
+            throw new TransicaoStatusInvalidaException("Pedido indisponivel.");
         }
 
         if (atualStatus == StatusPedido.RECEBIDO && !(novoStatus == StatusPedido.COZINHA || novoStatus == StatusPedido.CANCELADO)) {
-            throw new RuntimeException("Pedido RECEBIDO só pode ser alterado para COZINHA ou CANCELADO.");
+            throw new TransicaoStatusInvalidaException("Pedido RECEBIDO só pode ser alterado para COZINHA ou CANCELADO.");
         }
 
         if (atualStatus == StatusPedido.COZINHA && !(novoStatus == StatusPedido.PRONTO || novoStatus == StatusPedido.CANCELADO)) {
-            throw new RuntimeException("Pedido COZINHA só pode ser alterado para PRONTO ou CANCELADO.");
+            throw new TransicaoStatusInvalidaException("Pedido COZINHA só pode ser alterado para PRONTO ou CANCELADO.");
         }
 
         if (atualStatus == StatusPedido.PRONTO && !(novoStatus == StatusPedido.ENTREGUE || novoStatus == StatusPedido.CANCELADO)) {
-            throw new RuntimeException("Pedido PRONTO só pode ser alterado para ENTREGUE ou CANCELADO.");
+            throw new TransicaoStatusInvalidaException("Pedido PRONTO só pode ser alterado para ENTREGUE ou CANCELADO.");
         }
 
         pedido.setStatusPedido(novoStatus);
