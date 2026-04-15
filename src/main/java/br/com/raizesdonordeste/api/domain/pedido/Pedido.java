@@ -43,7 +43,7 @@ public class Pedido {
     private MetodoPagamento metodoPagamento;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "canal_venda")
+    @Column(name = "canal_pedido")
     private CanalPedido canalPedido;
 
     @Enumerated(EnumType.STRING)
