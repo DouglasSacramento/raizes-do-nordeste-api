@@ -14,6 +14,7 @@ import br.com.raizesdonordeste.api.infrastructure.repository.ClienteRepository;
 import br.com.raizesdonordeste.api.infrastructure.repository.PedidoRepository;
 import br.com.raizesdonordeste.api.infrastructure.repository.ProdutoRepository;
 import br.com.raizesdonordeste.api.infrastructure.repository.UnidadeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -94,6 +95,39 @@ class PedidoServiceTest {
         );
 
         assertThrows(PedidoSolicitacaoTrocoIndevidaException.class, () -> {
+            pedidoService.criarPedido(dto);
+        });
+
+        verify(pedidoRepository, never()).save(any());
+    }
+
+    @Test
+    void seProdutoNaoExistirDeveLancarExcecaoENaoSalvarPedido() {
+        Long produtoIdInvalido = 999L;
+
+        Unidade unidadeFalsa = new Unidade();
+        unidadeFalsa.setId(2L);
+
+        Cliente clienteFalso = new Cliente();
+        clienteFalso.setId(10L);
+
+        List<ItemCarrinhoRequestDTO> itens = List.of(
+                new ItemCarrinhoRequestDTO(produtoIdInvalido, 2)
+        );
+        PedidoRequestDTO dto = new PedidoRequestDTO(
+                2L,
+                10L,
+                true,
+                CanalPedido.APP,
+                MetodoPagamento.DINHEIRO,
+                itens
+        );
+
+        when(unidadeRepository.findById(2L)).thenReturn(Optional.of(unidadeFalsa));
+        when(clienteRepository.findById(10L)).thenReturn(Optional.of(clienteFalso));
+        when(produtoRepository.findById(produtoIdInvalido)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
             pedidoService.criarPedido(dto);
         });
 

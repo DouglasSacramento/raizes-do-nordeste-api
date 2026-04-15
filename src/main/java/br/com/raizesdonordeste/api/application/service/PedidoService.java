@@ -12,6 +12,7 @@ import br.com.raizesdonordeste.api.domain.unidade.Unidade;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
 import br.com.raizesdonordeste.api.infrastructure.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +37,9 @@ public class PedidoService {
 
         Pedido novoPedido = new Pedido();
         Unidade unidade = unidadeRepository.findById(dados.unidadeId())
-                .orElseThrow();
+                .orElseThrow(() -> new EntityNotFoundException("Unidade não encontrada."));
         Cliente cliente = clienteRepository.findById(dados.clienteId())
-                .orElseThrow();
+                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
 
         novoPedido.setCanalPedido(dados.canal());
         novoPedido.setMetodoPagamento(dados.metodoPagamento());
@@ -57,7 +58,8 @@ public class PedidoService {
         List<ItemPedido> itensDoPedido = new ArrayList<>();
 
         for (ItemCarrinhoRequestDTO itemDto : carrinhoDto) {
-            Produto produto = produtoRepository.findById(itemDto.produtoId()).orElseThrow();
+            Produto produto = produtoRepository.findById(itemDto.produtoId())
+                    .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado no sistema."));
 
             ItemPedido item = new ItemPedido();
             item.setProduto(produto);

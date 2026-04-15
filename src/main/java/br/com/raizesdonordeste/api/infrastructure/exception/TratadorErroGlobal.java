@@ -2,6 +2,7 @@ package br.com.raizesdonordeste.api.infrastructure.exception;
 
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,4 +58,13 @@ public class TratadorErroGlobal {
         return problem;
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ProblemDetail handleRecursosNaoEncontrados(EntityNotFoundException ex){
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problem.setTitle("Recurso não encontrado");
+        problem.setDetail(ex.getMessage());
+        problem.setProperty("dataHora", LocalDateTime.now());
+
+        return problem;
+    }
 }
