@@ -1,7 +1,7 @@
-package br.com.raizesdonordeste.api.application.service;
+package br.com.raizesdonordeste.api.application.service.pedido;
 
-import br.com.raizesdonordeste.api.application.service.dto.ItemCarrinhoRequestDTO;
-import br.com.raizesdonordeste.api.application.service.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.application.service.pedido.dto.ItemCarrinhoRequestDTO;
+import br.com.raizesdonordeste.api.application.service.pedido.dto.PedidoRequestDTO;
 import br.com.raizesdonordeste.api.domain.cliente.Cliente;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.ItemPedido;
@@ -41,11 +41,12 @@ public class PedidoService {
         Cliente cliente = clienteRepository.findById(dados.clienteId())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
 
+        novoPedido.setExigeTroco(dados.exigeTroco());
         novoPedido.setCanalPedido(dados.canal());
         novoPedido.setMetodoPagamento(dados.metodoPagamento());
-        novoPedido.setExigeTroco(dados.exigeTroco());
         novoPedido.setUnidade(unidade);
         novoPedido.setCliente(cliente);
+        novoPedido.setCanalPedido(dados.canal());
         novoPedido.setStatusPedido(StatusPedido.RECEBIDO);
 
         processarCarrinhoEValorTotal(novoPedido, dados.carrinho());

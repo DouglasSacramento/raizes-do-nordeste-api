@@ -1,8 +1,7 @@
-package br.com.raizesdonordeste.api.application.service.dto;
+package br.com.raizesdonordeste.api.application.service.pedido.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 public record ItemCarrinhoRequestDTO(
         @NotNull

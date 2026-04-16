@@ -48,7 +48,6 @@ CREATE TABLE clientes
 CREATE TABLE pedidos
 (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
-    canal            VARCHAR(50),
     metodo_pagamento VARCHAR(50),
     status_pedido    VARCHAR(50),
     exige_troco      BOOLEAN,
