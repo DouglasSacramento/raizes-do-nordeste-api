@@ -3,6 +3,7 @@ package br.com.raizesdonordeste.api.infrastructure.exception;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PagamentoStatusInvalidoException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.UsuarioNaoEncontrado;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -74,6 +76,16 @@ public class TratadorErroGlobal {
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problem.setTitle("Status Pagamento Inválido");
         problem.setDetail(ex.getMessage());
+        problem.setProperty("dataHora", LocalDateTime.now());
+
+        return problem;
+    }
+
+    @ExceptionHandler(UsuarioNaoEncontrado.class)
+    public ProblemDetail handleUsuarioNaoEncontrado(UsuarioNaoEncontrado ex){
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problem.setDetail(ex.getMessage());
+        problem.setTitle("Usuario não encontrado");
         problem.setProperty("dataHora", LocalDateTime.now());
 
         return problem;
