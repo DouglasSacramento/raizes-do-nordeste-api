@@ -1,9 +1,6 @@
 package br.com.raizesdonordeste.api.infrastructure.exception;
 
-import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PagamentoStatusInvalidoException;
-import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
-import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
-import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.UsuarioNaoEncontrado;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -86,6 +83,16 @@ public class TratadorErroGlobal {
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setDetail(ex.getMessage());
         problem.setTitle("Usuario não encontrado");
+        problem.setProperty("dataHora", LocalDateTime.now());
+
+        return problem;
+    }
+
+    @ExceptionHandler(RecursoJaCadastradoException.class)
+    public ProblemDetail handleRecursoJaCadastrado(RecursoJaCadastradoException ex){
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problem.setDetail(ex.getMessage());
+        problem.setTitle("Recurso já Cadastrado");
         problem.setProperty("dataHora", LocalDateTime.now());
 
         return problem;
