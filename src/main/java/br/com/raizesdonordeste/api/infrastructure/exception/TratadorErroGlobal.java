@@ -1,5 +1,6 @@
 package br.com.raizesdonordeste.api.infrastructure.exception;
 
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PagamentoStatusInvalidoException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
 import jakarta.persistence.EntityNotFoundException;
@@ -51,7 +52,7 @@ public class TratadorErroGlobal {
     @ExceptionHandler(TransicaoStatusInvalidaException.class)
     public ProblemDetail handleErrosDeMudancaDeStatusDePedidos(TransicaoStatusInvalidaException ex){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problem.setTitle("Transição status inválida");
+        problem.setTitle("Transição Status Inválida");
         problem.setDetail(ex.getMessage());
         problem.setProperty("dataHora", LocalDateTime.now());
 
@@ -62,6 +63,16 @@ public class TratadorErroGlobal {
     public ProblemDetail handleRecursosNaoEncontrados(EntityNotFoundException ex){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setTitle("Recurso não encontrado");
+        problem.setDetail(ex.getMessage());
+        problem.setProperty("dataHora", LocalDateTime.now());
+
+        return problem;
+    }
+
+    @ExceptionHandler(PagamentoStatusInvalidoException.class)
+    public ProblemDetail handlePagamentoComStatusInvalido(PagamentoStatusInvalidoException ex){
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problem.setTitle("Status Pagamento Inválido");
         problem.setDetail(ex.getMessage());
         problem.setProperty("dataHora", LocalDateTime.now());
 
