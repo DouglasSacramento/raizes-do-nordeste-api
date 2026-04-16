@@ -1,6 +1,6 @@
 package br.com.raizesdonordeste.api.service.autenticacao;
 
-import br.com.raizesdonordeste.api.infrastructure.repository.UsuarioRepository;
+import br.com.raizesdonordeste.api.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

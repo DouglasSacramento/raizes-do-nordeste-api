@@ -1,4 +1,4 @@
-package br.com.raizesdonordeste.api.application.service.pedido.dto;
+package br.com.raizesdonordeste.api.service.pedido.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

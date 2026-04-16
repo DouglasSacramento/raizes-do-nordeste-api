@@ -1,4 +1,4 @@
-package br.com.raizesdonordeste.api.infrastructure.controller;
+package br.com.raizesdonordeste.api.controller;
 
 import br.com.raizesdonordeste.api.service.usuario.UsuarioService;
 import org.springframework.http.ResponseEntity;

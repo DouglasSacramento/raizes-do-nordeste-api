@@ -1,7 +1,8 @@
-package br.com.raizesdonordeste.api.application.service.pedido;
+package br.com.raizesdonordeste.api.service.pedido;
 
-import br.com.raizesdonordeste.api.application.service.pedido.dto.ItemCarrinhoRequestDTO;
-import br.com.raizesdonordeste.api.application.service.pedido.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.repository.*;
+import br.com.raizesdonordeste.api.service.pedido.dto.ItemCarrinhoRequestDTO;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
 import br.com.raizesdonordeste.api.domain.cliente.Cliente;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.ItemPedido;
@@ -11,7 +12,6 @@ import br.com.raizesdonordeste.api.domain.produto.Produto;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
-import br.com.raizesdonordeste.api.infrastructure.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

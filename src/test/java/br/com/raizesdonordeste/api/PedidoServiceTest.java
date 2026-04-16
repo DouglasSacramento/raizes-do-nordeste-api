@@ -1,8 +1,8 @@
 package br.com.raizesdonordeste.api;
 
-import br.com.raizesdonordeste.api.application.service.pedido.dto.ItemCarrinhoRequestDTO;
-import br.com.raizesdonordeste.api.application.service.pedido.dto.PedidoRequestDTO;
-import br.com.raizesdonordeste.api.application.service.pedido.PedidoService;
+import br.com.raizesdonordeste.api.service.pedido.dto.ItemCarrinhoRequestDTO;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.service.pedido.PedidoService;
 import br.com.raizesdonordeste.api.domain.cliente.Cliente;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.Pedido;
@@ -10,10 +10,10 @@ import br.com.raizesdonordeste.api.domain.pedido.enums.CanalPedido;
 import br.com.raizesdonordeste.api.domain.produto.Produto;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
-import br.com.raizesdonordeste.api.infrastructure.repository.ClienteRepository;
-import br.com.raizesdonordeste.api.infrastructure.repository.PedidoRepository;
-import br.com.raizesdonordeste.api.infrastructure.repository.ProdutoRepository;
-import br.com.raizesdonordeste.api.infrastructure.repository.UnidadeRepository;
+import br.com.raizesdonordeste.api.repository.ClienteRepository;
+import br.com.raizesdonordeste.api.repository.PedidoRepository;
+import br.com.raizesdonordeste.api.repository.ProdutoRepository;
+import br.com.raizesdonordeste.api.repository.UnidadeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

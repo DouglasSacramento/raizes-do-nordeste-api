@@ -1,6 +1,6 @@
-package br.com.raizesdonordeste.api.infrastructure.controller.pagamento;
+package br.com.raizesdonordeste.api.controller;
 
-import br.com.raizesdonordeste.api.application.service.pagamento.PagamentoService;
+import br.com.raizesdonordeste.api.service.pagamento.PagamentoService;
 import br.com.raizesdonordeste.api.domain.pagamento.Pagamento;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

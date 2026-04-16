@@ -1,7 +1,7 @@
 package br.com.raizesdonordeste.api.service.usuario;
 
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.UsuarioNaoEncontrado;
-import br.com.raizesdonordeste.api.infrastructure.repository.UsuarioRepository;
+import br.com.raizesdonordeste.api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 @Service

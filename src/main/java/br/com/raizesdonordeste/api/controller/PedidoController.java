@@ -1,10 +1,10 @@
-package br.com.raizesdonordeste.api.infrastructure.controller.pedido;
+package br.com.raizesdonordeste.api.controller;
 
-import br.com.raizesdonordeste.api.application.service.pedido.PedidoService;
-import br.com.raizesdonordeste.api.application.service.pedido.dto.PedidoRequestDTO;
-import br.com.raizesdonordeste.api.application.service.pedido.dto.PedidoResponseDTO;
-import br.com.raizesdonordeste.api.application.service.pedido.dto.PedidoStatusRequestDTO;
-import br.com.raizesdonordeste.api.application.service.pedido.dto.PedidoStatusResponseDTO;
+import br.com.raizesdonordeste.api.service.pedido.PedidoService;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoResponseDTO;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoStatusRequestDTO;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoStatusResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

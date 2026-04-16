@@ -1,12 +1,12 @@
-package br.com.raizesdonordeste.api.application.service.pagamento;
+package br.com.raizesdonordeste.api.service.pagamento;
 
 import br.com.raizesdonordeste.api.domain.pagamento.Pagamento;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.StatusPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.Pedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PagamentoStatusInvalidoException;
-import br.com.raizesdonordeste.api.infrastructure.repository.PagamentoRepository;
-import br.com.raizesdonordeste.api.infrastructure.repository.PedidoRepository;
+import br.com.raizesdonordeste.api.repository.PagamentoRepository;
+import br.com.raizesdonordeste.api.repository.PedidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package br.com.raizesdonordeste.api.infrastructure.security;
 
-import br.com.raizesdonordeste.api.infrastructure.repository.UsuarioRepository;
+import br.com.raizesdonordeste.api.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
