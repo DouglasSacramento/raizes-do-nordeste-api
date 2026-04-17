@@ -3,14 +3,13 @@ package br.com.raizesdonordeste.api.service.produto;
 import br.com.raizesdonordeste.api.domain.produto.Produto;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.RecursoJaCadastradoException;
 import br.com.raizesdonordeste.api.repository.ProdutoRepository;
-import br.com.raizesdonordeste.api.service.produto.dto.ProdutoDetalhamentoResponseDTO;
 import br.com.raizesdonordeste.api.service.produto.dto.ProdutoRequestDTO;
 import br.com.raizesdonordeste.api.service.produto.dto.ProdutoResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +30,9 @@ public class ProdutoService {
         return produtoRepository.save(produtoNovo);
     }
 
-    public List<ProdutoResponseDTO> listarTodos() {
-        List<Produto> produtos = produtoRepository.findAll();
-
-        return produtos.stream()
-                .map(ProdutoResponseDTO::new)
-                .toList();
+    public Page<ProdutoResponseDTO> listarTodos(Pageable pageable) {
+        return produtoRepository.findAll(pageable)
+                .map(ProdutoResponseDTO::new);
     }
 
     public Produto buscarPorId(Long produtoId) {

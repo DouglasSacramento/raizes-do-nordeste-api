@@ -6,6 +6,9 @@ import br.com.raizesdonordeste.api.service.produto.dto.ProdutoRequestDTO;
 import br.com.raizesdonordeste.api.service.produto.dto.ProdutoResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,10 +36,10 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProdutoResponseDTO>> listarTodos() {
-        var listaDeProdutos = produtoService.listarTodos();
+    public ResponseEntity<Page<ProdutoResponseDTO>> listarTodos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
+        var paginaDeProdutos = produtoService.listarTodos(pageable);
 
-        return ResponseEntity.ok().body(listaDeProdutos);
+        return ResponseEntity.ok().body(paginaDeProdutos);
     }
 
     @GetMapping("/{produtoID}")
