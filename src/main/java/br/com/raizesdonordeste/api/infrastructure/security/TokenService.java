@@ -1,5 +1,6 @@
 package br.com.raizesdonordeste.api.infrastructure.security;
 
+import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -21,13 +22,14 @@ public class TokenService {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 
-    public String gerarToken(String login){
+    public String gerarToken(Usuario usuario){
         try {
             var algoritimo = Algorithm.HMAC256(secret);
 
             return JWT.create()
                     .withIssuer("API Raizes do Nordeste")
-                    .withSubject(login)
+                    .withSubject(usuario.getLogin())
+                    .withClaim("role", usuario.getRole().name())
                     .withExpiresAt(gerarDataExpiracao())
                     .sign(algoritimo);
 

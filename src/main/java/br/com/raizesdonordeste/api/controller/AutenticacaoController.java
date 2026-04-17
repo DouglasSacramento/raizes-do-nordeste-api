@@ -1,5 +1,6 @@
 package br.com.raizesdonordeste.api.controller;
 
+import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import br.com.raizesdonordeste.api.service.autenticacao.dto.DadosLoginDTO;
 import br.com.raizesdonordeste.api.service.autenticacao.dto.TokenResponseDTO;
 import br.com.raizesdonordeste.api.infrastructure.security.TokenService;
@@ -30,8 +31,8 @@ public class AutenticacaoController {
         var tokenDeAutenticacao = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
         var authentication = manager.authenticate(tokenDeAutenticacao);
 
-        String login = authentication.getName();
-        var tokenJWT = tokenService.gerarToken(login);
+        var usuarioLogado = (Usuario) authentication.getPrincipal();
+        var tokenJWT = tokenService.gerarToken(usuarioLogado);
 
         return ResponseEntity.ok().body(new TokenResponseDTO(tokenJWT));
     }
