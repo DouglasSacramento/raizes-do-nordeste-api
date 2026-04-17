@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ public class ProdutoController {
 
     private final ProdutoService produtoService;
 
+    @PreAuthorize("hasRole('GERENTE')")
     @PostMapping
     public ResponseEntity<ProdutoResponseDTO> cadastrar(@Valid @RequestBody ProdutoRequestDTO dados) {
         var produtoNovo = produtoService.cadastrar(dados);
@@ -35,6 +37,7 @@ public class ProdutoController {
         return ResponseEntity.created(uri).body(new ProdutoResponseDTO(produtoNovo));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<Page<ProdutoResponseDTO>> listarTodos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         var paginaDeProdutos = produtoService.listarTodos(pageable);
@@ -42,6 +45,7 @@ public class ProdutoController {
         return ResponseEntity.ok().body(paginaDeProdutos);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{produtoID}")
     public ResponseEntity<ProdutoDetalhamentoResponseDTO> buscarPorId(@PathVariable Long produtoID) {
         var produto = produtoService.buscarPorId(produtoID);

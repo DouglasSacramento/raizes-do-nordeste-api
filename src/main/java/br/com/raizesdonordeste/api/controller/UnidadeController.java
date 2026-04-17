@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,6 +23,7 @@ public class UnidadeController {
 
     private final UnidadeService unidadeService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<UnidadeResponseDTO> registrar(@Valid @RequestBody UnidadeRequestDTO dados) {
         var unidadeNova = unidadeService.registrar(dados);
@@ -34,6 +36,7 @@ public class UnidadeController {
         return ResponseEntity.created(uri).body(new UnidadeResponseDTO(unidadeNova));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<Page<UnidadeResponseDTO>> listarTodas(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         var unidades = unidadeService.listarTodas(pageable);
@@ -41,6 +44,7 @@ public class UnidadeController {
         return ResponseEntity.ok().body(unidades);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{unidadeId}")
     public ResponseEntity<UnidadeDetalhamentoResponseDTO> listarPorId(@PathVariable Long unidadeId) {
         var unidade = unidadeService.listarPorId(unidadeId);
@@ -48,6 +52,7 @@ public class UnidadeController {
         return ResponseEntity.ok().body(new UnidadeDetalhamentoResponseDTO(unidade));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{unidadeNome}")
     public ResponseEntity<Void> deletar(@PathVariable String unidadeNome) {
         unidadeService.deletar(unidadeNome);
