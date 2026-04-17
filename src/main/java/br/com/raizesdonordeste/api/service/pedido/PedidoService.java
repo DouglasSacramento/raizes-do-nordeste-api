@@ -15,6 +15,7 @@ import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSol
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class PedidoService {
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
 
+    @Transactional
     public Pedido criarPedido(PedidoRequestDTO dados) {
         if (dados.exigeTroco() && dados.metodoPagamento() != MetodoPagamento.DINHEIRO) {
             throw new PedidoSolicitacaoTrocoIndevidaException("Troco só pode ser solicitado para pagamentos em DINHEIRO.");
@@ -46,7 +48,6 @@ public class PedidoService {
         novoPedido.setMetodoPagamento(dados.metodoPagamento());
         novoPedido.setUnidade(unidade);
         novoPedido.setCliente(cliente);
-        novoPedido.setCanalPedido(dados.canal());
         novoPedido.setStatusPedido(StatusPedido.RECEBIDO);
 
         processarCarrinhoEValorTotal(novoPedido, dados.carrinho());
@@ -77,8 +78,9 @@ public class PedidoService {
         pedido.setValorTotal(valorTotal);
     }
 
+    @Transactional
     public Pedido atualizarStatus(Long pedidoId, StatusPedido novoStatus) {
-        Pedido pedido = pedidoRepository.findById(pedidoId).orElseThrow();
+        Pedido pedido = pedidoRepository.findById(pedidoId).orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado no sistema."));
         StatusPedido atualStatus = pedido.getStatusPedido();
 
         if (atualStatus == StatusPedido.CANCELADO || atualStatus == StatusPedido.ENTREGUE) {
