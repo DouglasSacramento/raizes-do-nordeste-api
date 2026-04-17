@@ -1,100 +1,109 @@
 package br.com.raizesdonordeste.api.infrastructure.exception;
 
+import br.com.raizesdonordeste.api.infrastructure.exception.dto.ErroResponseDTO;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class TratadorErroGlobal {
 
     @ExceptionHandler(PedidoSolicitacaoTrocoIndevidaException.class)
-    public ProblemDetail handleSolicitacaoTrocoIndevido(PedidoSolicitacaoTrocoIndevidaException ex) {
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problem.setDetail(ex.getMessage());
-        problem.setTitle("Solicitação Troco Indevida");
-        problem.setProperty("dataHora", LocalDateTime.now());
+    public ResponseEntity<ErroResponseDTO> handleSolicitacaoTrocoIndevido(PedidoSolicitacaoTrocoIndevidaException ex, HttpServletRequest request) {
+        var erro = new ErroResponseDTO(
+                "BAD_REQUEST",
+                ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
 
-        return problem;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleDadosInvalidos(MethodArgumentNotValidException ex) {
-        String mensagem = "Um ou mais campos da requisição estão inválidos.";
-
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problem.setDetail(mensagem);
-        problem.setTitle("Dados Inválidos");
-        problem.setProperty("dataHora", LocalDateTime.now());
-
-        Map<String, String> camposComErro = ex.getBindingResult().getFieldErrors()
+    public ResponseEntity<ErroResponseDTO> handleDadosInvalidos(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        List<String> detalhes = ex.getBindingResult().getFieldErrors()
                 .stream()
-                .collect(Collectors.toMap(
-                        erro -> erro.getField(),
-                        erro -> erro.getDefaultMessage(),
-                        (mensagemAntiga, mensagemNova)
-                                -> mensagemAntiga + " e " + mensagemNova
-                ));
-        problem.setProperty("campoInvalido", camposComErro);
+                .map(erro -> erro.getField() + ": " + erro.getDefaultMessage())
+                .collect(Collectors.toList());
 
-        return problem;
+        var erro = new ErroResponseDTO(
+                "VALIDATION_ERROR",
+                "Um ou mais campos da requisição estão inválidos.",
+                detalhes,
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
     @ExceptionHandler(TransicaoStatusInvalidaException.class)
-    public ProblemDetail handleErrosDeMudancaDeStatusDePedidos(TransicaoStatusInvalidaException ex){
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problem.setTitle("Transição Status Inválida");
-        problem.setDetail(ex.getMessage());
-        problem.setProperty("dataHora", LocalDateTime.now());
-
-        return problem;
+    public ResponseEntity<ErroResponseDTO> handleErrosDeMudancaDeStatusDePedidos(TransicaoStatusInvalidaException ex, HttpServletRequest request) {
+        var erro = new ErroResponseDTO(
+                "BAD_REQUEST",
+                ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ProblemDetail handleRecursosNaoEncontrados(EntityNotFoundException ex){
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        problem.setTitle("Recurso não encontrado");
-        problem.setDetail(ex.getMessage());
-        problem.setProperty("dataHora", LocalDateTime.now());
-
-        return problem;
+    public ResponseEntity<ErroResponseDTO> handleRecursosNaoEncontrados(EntityNotFoundException ex, HttpServletRequest request) {
+        var erro = new ErroResponseDTO(
+                "NOT_FOUND",
+                ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
 
     @ExceptionHandler(PagamentoStatusInvalidoException.class)
-    public ProblemDetail handlePagamentoComStatusInvalido(PagamentoStatusInvalidoException ex){
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problem.setTitle("Status Pagamento Inválido");
-        problem.setDetail(ex.getMessage());
-        problem.setProperty("dataHora", LocalDateTime.now());
-
-        return problem;
+    public ResponseEntity<ErroResponseDTO> handlePagamentoComStatusInvalido(PagamentoStatusInvalidoException ex, HttpServletRequest request) {
+        var erro = new ErroResponseDTO(
+                "BAD_REQUEST",
+                ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
     @ExceptionHandler(UsuarioNaoEncontrado.class)
-    public ProblemDetail handleUsuarioNaoEncontrado(UsuarioNaoEncontrado ex){
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        problem.setDetail(ex.getMessage());
-        problem.setTitle("Usuario não encontrado");
-        problem.setProperty("dataHora", LocalDateTime.now());
-
-        return problem;
+    public ResponseEntity<ErroResponseDTO> handleUsuarioNaoEncontrado(UsuarioNaoEncontrado ex, HttpServletRequest request) {
+        var erro = new ErroResponseDTO(
+                "NOT_FOUND",
+                ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
 
     @ExceptionHandler(RecursoJaCadastradoException.class)
-    public ProblemDetail handleRecursoJaCadastrado(RecursoJaCadastradoException ex){
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problem.setDetail(ex.getMessage());
-        problem.setTitle("Recurso já Cadastrado");
-        problem.setProperty("dataHora", LocalDateTime.now());
-
-        return problem;
+    public ResponseEntity<ErroResponseDTO> handleRecursoJaCadastrado(RecursoJaCadastradoException ex, HttpServletRequest request) {
+        var erro = new ErroResponseDTO(
+                "BAD_REQUEST",
+                ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 }
