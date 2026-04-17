@@ -20,8 +20,8 @@ public class UnidadeService {
 
     @Transactional
     public Unidade registrar(UnidadeRequestDTO dados) {
-        if (unidadeRepository.existsByNome("Raízes do Nordeste - " + dados.nome())) {
-            throw new RecursoJaCadastradoException("Unidade já cadastrada no sistema.");
+        if (unidadeRepository.existsByNome("Raízes do Nordeste - " + dados.nome().toUpperCase())) {
+            throw new RecursoJaCadastradoException("Unidade(" + dados.nome() + ") já está cadastrada no sistema.");
         }
 
         Unidade unidadeNova = new Unidade();
@@ -43,7 +43,7 @@ public class UnidadeService {
 
     @Transactional
     public void deletar(String nome) {
-        if (!unidadeRepository.existsByNome("Raízes do Nordeste - " + nome.toUpperCase())){
+        if (!unidadeRepository.existsByNome("Raízes do Nordeste - " + nome.toUpperCase())) {
             throw new EntityNotFoundException("Unidade(" + nome + ") não está cadastrada no sistema.");
         }
         unidadeRepository.deleteByNome("Raízes do Nordeste - " + nome.toUpperCase());
