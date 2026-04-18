@@ -1,5 +1,6 @@
 package br.com.raizesdonordeste.api.controller;
 
+import br.com.raizesdonordeste.api.domain.pedido.enums.CanalPedido;
 import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import br.com.raizesdonordeste.api.service.pedido.PedidoService;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
@@ -8,6 +9,10 @@ import br.com.raizesdonordeste.api.service.pedido.dto.PedidoStatusRequestDTO;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoStatusResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,5 +46,16 @@ public class PedidoController {
         var pedido = pedidoService.atualizarStatus(id, dados.novoStatus());
 
         return ResponseEntity.ok().body(new PedidoStatusResponseDTO(pedido));
+    }
+
+    @PreAuthorize("hasRole('GERENTE')")
+    @GetMapping
+    public ResponseEntity<Page<PedidoResponseDTO>> listarPedidosPorCanal(
+            @Valid @RequestParam(required = false) CanalPedido canalPedido,
+            @PageableDefault(value = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        var pedidos = pedidoService.listarPorCanalPedido(canalPedido, pageable);
+
+        return ResponseEntity.ok().body(pedidos);
     }
 }

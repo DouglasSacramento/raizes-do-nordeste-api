@@ -1,21 +1,24 @@
 package br.com.raizesdonordeste.api.service.pedido;
 
-import br.com.raizesdonordeste.api.domain.usuario.Usuario;
-import br.com.raizesdonordeste.api.repository.*;
-import br.com.raizesdonordeste.api.service.pedido.dto.ItemCarrinhoRequestDTO;
-import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
 import br.com.raizesdonordeste.api.domain.cliente.Cliente;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.MetodoPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.ItemPedido;
 import br.com.raizesdonordeste.api.domain.pedido.Pedido;
+import br.com.raizesdonordeste.api.domain.pedido.enums.CanalPedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;
 import br.com.raizesdonordeste.api.domain.produto.Produto;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
-import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
+import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.TransicaoStatusInvalidaException;
+import br.com.raizesdonordeste.api.repository.*;
+import br.com.raizesdonordeste.api.service.pedido.dto.ItemCarrinhoRequestDTO;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
+import br.com.raizesdonordeste.api.service.pedido.dto.PedidoResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,5 +109,15 @@ public class PedidoService {
         pedido.setStatusPedido(novoStatus);
 
         return pedidoRepository.save(pedido);
+    }
+
+    public Page<PedidoResponseDTO> listarPorCanalPedido(CanalPedido canalPedido, Pageable pageable) {
+        if (canalPedido == null) {
+            return pedidoRepository.findAll(pageable)
+                    .map(PedidoResponseDTO::new);
+        } else {
+            return pedidoRepository.findByCanalPedido(canalPedido, pageable)
+                    .map(PedidoResponseDTO::new);
+        }
     }
 }
