@@ -1,5 +1,6 @@
 package br.com.raizesdonordeste.api.service.pedido;
 
+import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import br.com.raizesdonordeste.api.repository.*;
 import br.com.raizesdonordeste.api.service.pedido.dto.ItemCarrinhoRequestDTO;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
@@ -14,6 +15,7 @@ import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.Transicao
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PedidoSolicitacaoTrocoIndevidaException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +34,7 @@ public class PedidoService {
     private final ProdutoRepository produtoRepository;
 
     @Transactional
-    public Pedido criarPedido(PedidoRequestDTO dados) {
+    public Pedido criarPedido(Usuario usuario, PedidoRequestDTO dados) {
         if (dados.exigeTroco() && dados.metodoPagamento() != MetodoPagamento.DINHEIRO) {
             throw new PedidoSolicitacaoTrocoIndevidaException("Troco só pode ser solicitado para pagamentos em DINHEIRO.");
         }
@@ -40,8 +42,10 @@ public class PedidoService {
         Pedido novoPedido = new Pedido();
         Unidade unidade = unidadeRepository.findById(dados.unidadeId())
                 .orElseThrow(() -> new EntityNotFoundException("Unidade não encontrada."));
-        Cliente cliente = clienteRepository.findById(dados.clienteId())
+        Cliente cliente = clienteRepository.findByUsuarioId(usuario.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
+
+        System.out.println(cliente);
 
         novoPedido.setExigeTroco(dados.exigeTroco());
         novoPedido.setCanalPedido(dados.canal());

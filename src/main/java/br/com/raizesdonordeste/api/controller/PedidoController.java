@@ -1,5 +1,6 @@
 package br.com.raizesdonordeste.api.controller;
 
+import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import br.com.raizesdonordeste.api.service.pedido.PedidoService;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoResponseDTO;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,8 +25,8 @@ public class PedidoController {
 
     @PreAuthorize("hasAnyRole('CLIENTE', 'GERENTE')")
     @PostMapping
-    public ResponseEntity<PedidoResponseDTO> criar(@Valid @RequestBody PedidoRequestDTO dados) {
-        var pedido = pedidoService.criarPedido(dados);
+    public ResponseEntity<PedidoResponseDTO> criar(@AuthenticationPrincipal Usuario usuario, @Valid @RequestBody PedidoRequestDTO dados) {
+        var pedido = pedidoService.criarPedido(usuario, dados);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(pedido.getId())

@@ -13,9 +13,6 @@ public record PedidoRequestDTO(
         Long unidadeId,
 
         @NotNull
-        Long clienteId,
-
-        @NotNull
         Boolean exigeTroco,
 
         @NotNull
