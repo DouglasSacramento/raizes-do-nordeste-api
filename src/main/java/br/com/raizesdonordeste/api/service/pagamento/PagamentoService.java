@@ -28,6 +28,7 @@ public class PagamentoService {
     private final PagamentoRepository pagamentoRepository;
     private final PedidoRepository pedidoRepository;
     private final ItemEstoqueRepository itemEstoqueRepository;
+    private final CalculadoraFidelidadeService calculadoraFidelidadeService;
 
     @Transactional
     public Pagamento processarPagamento(Long pedidoId) {
@@ -63,6 +64,7 @@ public class PagamentoService {
         pagamento.setStatusPagamento(StatusPagamento.APROVADO);
 
         realizarBaixaDeEstoque(pedido);
+        calculadoraFidelidadeService.pontuarCliente(pedido);
 
         pagamentoRepository.save(pagamento);
 
