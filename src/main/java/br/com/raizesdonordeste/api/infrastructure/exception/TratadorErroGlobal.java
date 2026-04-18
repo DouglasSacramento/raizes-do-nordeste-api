@@ -108,7 +108,7 @@ public class TratadorErroGlobal {
     }
 
     @ExceptionHandler(PagamentoRecusadoException.class)
-    public ResponseEntity<ErroResponseDTO> handleEstoqueInsuficiente(PagamentoRecusadoException ex, HttpServletRequest request){
+    public ResponseEntity<ErroResponseDTO> handlePagamentoRecusado(PagamentoRecusadoException ex, HttpServletRequest request){
         var erro = new ErroResponseDTO(
                 "PAYMENT_REQUIRED",
                 ex.getMessage(),
@@ -118,5 +118,18 @@ public class TratadorErroGlobal {
         );
 
         return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).body(erro);
+    }
+
+    @ExceptionHandler(EstoqueInsuficienteException.class)
+    public ResponseEntity<ErroResponseDTO> handleEstoqueInsuficiente(EstoqueInsuficienteException ex, HttpServletRequest request){
+        var erro = new ErroResponseDTO(
+                "BAD_REQUEST",
+                ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 }
