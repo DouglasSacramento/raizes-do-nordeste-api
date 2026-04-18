@@ -4,6 +4,7 @@ import br.com.raizesdonordeste.api.domain.pagamento.Pagamento;
 import br.com.raizesdonordeste.api.domain.pagamento.enums.StatusPagamento;
 import br.com.raizesdonordeste.api.domain.pedido.Pedido;
 import br.com.raizesdonordeste.api.domain.pedido.enums.StatusPedido;
+import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PagamentoRecusadoException;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.PagamentoStatusInvalidoException;
 import br.com.raizesdonordeste.api.repository.PagamentoRepository;
 import br.com.raizesdonordeste.api.repository.PedidoRepository;
@@ -44,9 +45,17 @@ public class PagamentoService {
         pagamento.setValor(pedido.getValorTotal());
         pagamento.setCodigoGateway(UUID.randomUUID().toString());
         pagamento.setMetodoPagamento(pedido.getMetodoPagamento());
-        pagamento.setStatusPagamento(StatusPagamento.APROVADO);
         pagamento.setPedido(pedido);
 
+        boolean resultadoPagamento = Math.random() > 0.3;
+
+        if (!resultadoPagamento){
+            pagamento.setStatusPagamento(StatusPagamento.RECUSADO);
+            pagamentoRepository.save(pagamento);
+            throw new PagamentoRecusadoException("Pagamento não aprovado. Tente novamente ou contate sua operadora.");
+        }
+
+        pagamento.setStatusPagamento(StatusPagamento.APROVADO);
         pagamentoRepository.save(pagamento);
 
         pedido.setStatusPedido(StatusPedido.COZINHA);
