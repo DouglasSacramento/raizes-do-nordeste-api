@@ -40,6 +40,7 @@ public class ClienteService {
         Cliente clienteNovo = new Cliente();
         clienteNovo.setNome(dados.nome());
         clienteNovo.setCpf(dados.cpf());
+        clienteNovo.setDataNasc(dados.dataNasc());
         clienteNovo.setUsuario(usuarioNovo);
 
         return clienteRepository.save(clienteNovo);

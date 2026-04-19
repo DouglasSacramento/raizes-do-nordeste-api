@@ -19,7 +19,7 @@ public class CalculadoraFidelidadeService {
         Cliente cliente = clienteRepository.findById(pedido.getCliente().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não cadastrado no sistema."));
 
-        if (!cliente.getAceitLgpd()) {
+        if (!cliente.getAceiteLgpd()) {
             return cliente;
         }
 

@@ -16,32 +16,45 @@ CREATE TABLE produtos
 CREATE TABLE usuarios
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    login      VARCHAR(255),
-    senha      VARCHAR(255),
+    login      VARCHAR(255) UNIQUE NOT NULL,
+    senha      VARCHAR(255) NOT NULL,
     role       VARCHAR(50),
     unidade_id BIGINT,
     FOREIGN KEY (unidade_id) REFERENCES unidades (id)
 );
 
-CREATE TABLE item_estoque
+CREATE TABLE itens_estoque
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     quantidade INT,
     unidade_id BIGINT,
     produto_id BIGINT,
     FOREIGN KEY (unidade_id) REFERENCES unidades (id),
-    FOREIGN KEY (produto_id) REFERENCES produtos (id)
+    FOREIGN KEY (produto_id) REFERENCES produtos (id),
+    UNIQUE (unidade_id, produto_id)
 );
 
 CREATE TABLE clientes
 (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome        VARCHAR(255) NOT NULL,
-    cpf         VARCHAR(11),
-    data_nasc   DATE,
+    cpf         VARCHAR(11) UNIQUE,
+    data_nasc   DATE NOT NULL ,
+    usuario_id  BIGINT UNIQUE,
     aceite_lgpd BOOLEAN,
     pontos      INT,
-    usuario_id  BIGINT,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
+);
+
+CREATE TABLE funcionarios
+(
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome          VARCHAR(255) NOT NULL,
+    cpf           VARCHAR(11) UNIQUE,
+    data_nasc     DATE NOT NULL ,
+    usuario_id    BIGINT UNIQUE,
+    identificacao VARCHAR(50),
+    data_admissao DATE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
 );
 
@@ -80,6 +93,6 @@ CREATE TABLE pagamentos
     codigo_gateway   VARCHAR(255),
     metodo_pagamento VARCHAR(50),
     status_pagamento VARCHAR(50),
-    pedido_id        BIGINT,
+    pedido_id        BIGINT UNIQUE ,
     FOREIGN KEY (pedido_id) REFERENCES pedidos (id)
 );
