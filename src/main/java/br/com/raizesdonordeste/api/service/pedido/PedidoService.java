@@ -48,8 +48,6 @@ public class PedidoService {
         Cliente cliente = clienteRepository.findByUsuarioId(usuario.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
 
-        System.out.println(cliente);
-
         novoPedido.setExigeTroco(dados.exigeTroco());
         novoPedido.setCanalPedido(dados.canal());
         novoPedido.setMetodoPagamento(dados.metodoPagamento());

@@ -21,12 +21,12 @@ public class ClienteService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Cliente cadastrar(ClienteRequestDTO dados){
-        if (usuarioRepository.findByLogin(dados.login()) != null){
+    public Cliente cadastrar(ClienteRequestDTO dados) {
+        if (usuarioRepository.findByLogin(dados.login()) != null) {
             throw new RecursoJaCadastradoException("Este email já está cadastrado no sistema!");
         }
 
-        if (clienteRepository.existsByCpf(dados.cpf())){
+        if (clienteRepository.existsByCpf(dados.cpf())) {
             throw new RecursoJaCadastradoException("Este cpf já está cadastrado no sistema!");
         }
 
@@ -41,6 +41,10 @@ public class ClienteService {
         clienteNovo.setNome(dados.nome());
         clienteNovo.setCpf(dados.cpf());
         clienteNovo.setDataNasc(dados.dataNasc());
+
+        Boolean aceite = dados.aceiteLgpd();
+        clienteNovo.setAceiteLgpd(aceite != null && aceite);
+
         clienteNovo.setUsuario(usuarioNovo);
 
         return clienteRepository.save(clienteNovo);

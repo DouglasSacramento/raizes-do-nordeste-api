@@ -18,6 +18,8 @@ public record ClienteRequestDTO(
         @NotNull
         LocalDate dataNasc,
 
+        Boolean aceiteLgpd,
+
         @NotBlank
         @Email(message = "Email em formato inválido")
         String login,
