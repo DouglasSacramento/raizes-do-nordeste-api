@@ -35,7 +35,7 @@ public class PagamentoService {
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new EntityNotFoundException("Pedido informado não existe."));
 
-        List<StatusPedido> statusPermitidos = List.of(StatusPedido.RECEBIDO);
+        List<StatusPedido> statusPermitidos = List.of(StatusPedido.AGUARDANDO_PAGAMENTO);
         if (!statusPermitidos.contains(pedido.getStatusPedido())) {
             throw new PagamentoStatusInvalidoException("Pedido não está com status válido para pagamento.");
         }
@@ -53,12 +53,16 @@ public class PagamentoService {
         pagamento.setMetodoPagamento(pedido.getMetodoPagamento());
         pagamento.setPedido(pedido);
 
-        boolean resultadoPagamento = Math.random() > 0.3;
+        boolean resultadoPagamento = Math.random() > 0.5;
 
         if (!resultadoPagamento) {
             pagamento.setStatusPagamento(StatusPagamento.RECUSADO);
+            pedido.setStatusPedido(StatusPedido.AGUARDANDO_PAGAMENTO);
+
             pagamentoRepository.save(pagamento);
-            throw new PagamentoRecusadoException("Pagamento não aprovado. Tente novamente ou contate sua operadora.");
+            pedidoRepository.save(pedido);
+
+            return pagamento;
         }
 
         pagamento.setStatusPagamento(StatusPagamento.APROVADO);

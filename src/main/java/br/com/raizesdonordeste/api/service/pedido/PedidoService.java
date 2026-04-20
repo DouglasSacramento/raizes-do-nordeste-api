@@ -53,7 +53,7 @@ public class PedidoService {
         novoPedido.setMetodoPagamento(dados.metodoPagamento());
         novoPedido.setUnidade(unidade);
         novoPedido.setCliente(cliente);
-        novoPedido.setStatusPedido(StatusPedido.RECEBIDO);
+        novoPedido.setStatusPedido(StatusPedido.AGUARDANDO_PAGAMENTO);
 
         processarCarrinhoEValorTotal(novoPedido, dados.carrinho());
 
@@ -92,7 +92,7 @@ public class PedidoService {
             throw new TransicaoStatusInvalidaException("Pedido indisponivel.");
         }
 
-        if (atualStatus == StatusPedido.RECEBIDO && !(novoStatus == StatusPedido.COZINHA || novoStatus == StatusPedido.CANCELADO)) {
+        if (atualStatus == StatusPedido.AGUARDANDO_PAGAMENTO && !(novoStatus == StatusPedido.COZINHA || novoStatus == StatusPedido.CANCELADO)) {
             throw new TransicaoStatusInvalidaException("Pedido RECEBIDO só pode ser alterado para COZINHA ou CANCELADO.");
         }
 

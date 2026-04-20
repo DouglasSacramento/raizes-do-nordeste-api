@@ -3,6 +3,10 @@ package br.com.raizesdonordeste.api.domain.usuario;
 import br.com.raizesdonordeste.api.domain.unidade.Unidade;
 import br.com.raizesdonordeste.api.domain.usuario.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +14,10 @@ import java.util.Collection;
 
 @Entity(name = "Usuario")
 @Table(name = "usuarios")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Usuario implements UserDetails {
 
     @Id
@@ -25,14 +33,6 @@ public class Usuario implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidade_id", nullable = true)
     private Unidade unidade;
-
-    public Usuario() {
-    }
-
-    public Usuario(String login, String senha) {
-        this.login = login;
-        this.senha = senha;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,37 +67,5 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 }
