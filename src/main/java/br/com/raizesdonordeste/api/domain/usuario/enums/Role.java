@@ -7,13 +7,13 @@ import java.util.List;
 public enum Role {
     ADMIN("ROLE_ADMIN", "ROLE_GERENTE", "ROLE_ATENDENTE", "ROLE_COZINHA", "ROLE_CLIENTE"),
     GERENTE("ROLE_GERENTE", "ROLE_ATENDENTE", "ROLE_COZINHA", "ROLE_CLIENTE"),
-    ATENDENTE("ROLE_ATENDENTE"),
-    COZINHA("ROLE_COZINHA"),
+    ATENDENTE("ROLE_ATENDENTE", "ROLE_CLIENTE"),
+    COZINHA("ROLE_COZINHA", "ROLE_CLIENTE"),
     CLIENTE("ROLE_CLIENTE");
 
     private final List<String> permissoes;
 
-    Role(String... permissoes){
+    Role(String... permissoes) {
         this.permissoes = List.of(permissoes);
     }
 

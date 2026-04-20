@@ -21,6 +21,8 @@ public class Funcionario extends Pessoa {
 
     private String identificacao;
 
+    private Boolean ativo;
+
     @Column(name = "data_admissao")
     private LocalDate dataAdmissao;
 }

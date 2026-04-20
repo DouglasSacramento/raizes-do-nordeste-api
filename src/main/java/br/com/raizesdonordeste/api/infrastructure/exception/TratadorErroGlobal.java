@@ -1,16 +1,19 @@
 package br.com.raizesdonordeste.api.infrastructure.exception;
 
+import br.com.raizesdonordeste.api.domain.usuario.enums.Role;
 import br.com.raizesdonordeste.api.infrastructure.exception.dto.ErroResponseDTO;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,7 +111,7 @@ public class TratadorErroGlobal {
     }
 
     @ExceptionHandler(PagamentoRecusadoException.class)
-    public ResponseEntity<ErroResponseDTO> handlePagamentoRecusado(PagamentoRecusadoException ex, HttpServletRequest request){
+    public ResponseEntity<ErroResponseDTO> handlePagamentoRecusado(PagamentoRecusadoException ex, HttpServletRequest request) {
         var erro = new ErroResponseDTO(
                 "PAYMENT_REQUIRED",
                 ex.getMessage(),
@@ -121,10 +124,25 @@ public class TratadorErroGlobal {
     }
 
     @ExceptionHandler(EstoqueInsuficienteException.class)
-    public ResponseEntity<ErroResponseDTO> handleEstoqueInsuficiente(EstoqueInsuficienteException ex, HttpServletRequest request){
+    public ResponseEntity<ErroResponseDTO> handleEstoqueInsuficiente(EstoqueInsuficienteException ex, HttpServletRequest request) {
         var erro = new ErroResponseDTO(
                 "BAD_REQUEST",
                 ex.getMessage(),
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErroResponseDTO> handleRoleInvalida(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        String mensagem = "ROLES permitidas para novos funcionários: ATENDENTE, COZINHA, GERENTE";
+
+        var erro = new ErroResponseDTO(
+                "BAD_REQUEST",
+                mensagem,
                 List.of(),
                 LocalDateTime.now(),
                 request.getRequestURI()
