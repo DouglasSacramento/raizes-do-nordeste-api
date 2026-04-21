@@ -6,7 +6,7 @@ import java.util.List;
 public record ErroResponseDTO(
         String error,
         String message,
-        List<String> details,
+        List<?> details,
         LocalDateTime timestamp,
         String path
 ) {

@@ -12,13 +12,16 @@ import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.Pagamento
 import br.com.raizesdonordeste.api.repository.ItemEstoqueRepository;
 import br.com.raizesdonordeste.api.repository.PagamentoRepository;
 import br.com.raizesdonordeste.api.repository.PedidoRepository;
+import br.com.raizesdonordeste.api.service.estoque.dto.ErroEstoqueDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -79,20 +82,28 @@ public class PagamentoService {
     }
 
     private void realizarBaixaDeEstoque(Pedido pedido) {
-        for (ItemPedido item : pedido.getItens()) {
+        List<ErroEstoqueDTO> erros = new ArrayList<>();
 
-            ItemEstoque estoque = itemEstoqueRepository.findByUnidadeIdAndProdutoId(pedido.getUnidade().getId(), item.getProduto().getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Unidade selecionada não possui registro de estoque do produto: " + item.getProduto().getNome()));
+        for (ItemPedido item : pedido.getItens()) {
+            ItemEstoque estoque = itemEstoqueRepository
+                    .findByUnidadeIdAndProdutoId(pedido.getUnidade().getId(), item.getProduto().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Estoque não encontrado no sistema da unidade."));
 
             if (estoque.getQuantidade() < item.getQuantidade()) {
-                throw new EstoqueInsuficienteException(
-                        "Quantidade indisponível do produto: " + item.getProduto().getNome() +
-                                " [Solicitado: " + item.getQuantidade() + " - Saldo loja: " + estoque.getQuantidade() + "]."
-                );
+                erros.add(new ErroEstoqueDTO(
+                        item.getProduto().getId(),
+                        item.getProduto().getNome(),
+                        item.getQuantidade(),
+                        estoque.getQuantidade()
+                ));
+            } else {
+                estoque.setQuantidade(estoque.getQuantidade() - item.getQuantidade());
+                itemEstoqueRepository.save(estoque);
             }
+        }
 
-            estoque.setQuantidade(estoque.getQuantidade() - item.getQuantidade());
-            itemEstoqueRepository.save(estoque);
+        if (!erros.isEmpty()) {
+            throw new EstoqueInsuficienteException(erros);
         }
     }
 }

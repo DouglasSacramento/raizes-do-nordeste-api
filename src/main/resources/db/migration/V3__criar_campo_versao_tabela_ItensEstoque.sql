@@ -1,0 +1,2 @@
+ALTER TABLE itens_estoque
+    ADD COLUMN versao BIGINT DEFAULT 0 NOT NULL;

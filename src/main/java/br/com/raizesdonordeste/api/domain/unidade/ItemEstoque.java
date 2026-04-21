@@ -19,6 +19,9 @@ public class ItemEstoque {
 
     private Integer quantidade;
 
+    @Version
+    private Long versao;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidade_id")
     private Unidade unidade;
