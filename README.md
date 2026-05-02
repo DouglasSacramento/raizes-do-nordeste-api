@@ -8,7 +8,7 @@ Certifique-se de ter instalado em sua máquina:
 
 Abra o terminal e execute:
 ```bash
-git clone [https://github.com/DouglasSacramento/raizes-do-nordeste-api.git](https://github.com/DouglasSacramento/raizes-do-nordeste-api.git)
+git clone https://github.com/DouglasSacramento/raizes-do-nordeste-api.git
 cd raizes-do-nordeste-api
 ```
 
@@ -66,7 +66,7 @@ Senha: 123456
 📖 Documentação e Testes
 Você terá acesso às seguintes interfaces com a aplicação no ar:
 
-### 1. Documentação Swagger (OpenAPI): 
+### 1. Documentação Swagger (OpenAPI):
 Para testar e visualizar os contratos da API, acesse: http://localhost:8080/swagger-ui/index.html
 
 ### 2. Postman Collection: 
