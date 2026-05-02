@@ -9,7 +9,7 @@ public class EstoqueInsuficienteException extends RuntimeException {
     private final List<ErroEstoqueDTO> erros;
 
     public EstoqueInsuficienteException(List<ErroEstoqueDTO> erros) {
-        super("Estoque insuficiente");
+        super("Não há quantidade suficiente para um ou mais itens.");
         this.erros = erros;
     }
 

@@ -1,6 +1,5 @@
 package br.com.raizesdonordeste.api.infrastructure.exception;
 
-import br.com.raizesdonordeste.api.domain.usuario.enums.Role;
 import br.com.raizesdonordeste.api.infrastructure.exception.dto.ErroResponseDTO;
 import br.com.raizesdonordeste.api.infrastructure.exception.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -8,15 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -79,13 +77,13 @@ public class TratadorErroGlobal {
     @ExceptionHandler(PagamentoStatusInvalidoException.class)
     public ResponseEntity<ErroResponseDTO> handlePagamentoComStatusInvalido(PagamentoStatusInvalidoException ex, HttpServletRequest request) {
         var erro = new ErroResponseDTO(
-                "BAD_REQUEST",
+                "CONFLICT",
                 ex.getMessage(),
                 List.of(),
                 LocalDateTime.now(),
                 request.getRequestURI()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
     }
 
     @ExceptionHandler(UsuarioNaoEncontrado.class)
@@ -103,13 +101,13 @@ public class TratadorErroGlobal {
     @ExceptionHandler(RecursoJaCadastradoException.class)
     public ResponseEntity<ErroResponseDTO> handleRecursoJaCadastrado(RecursoJaCadastradoException ex, HttpServletRequest request) {
         var erro = new ErroResponseDTO(
-                "BAD_REQUEST",
+                "CONFLICT",
                 ex.getMessage(),
                 List.of(),
                 LocalDateTime.now(),
                 request.getRequestURI()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
     }
 
     @ExceptionHandler(PagamentoRecusadoException.class)
@@ -151,5 +149,35 @@ public class TratadorErroGlobal {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErroResponseDTO> handleErroAutenticacao(AuthenticationException ex, HttpServletRequest request) {
+        String mensagem = "Token ausente ou inválido";
+
+        var erro = new ErroResponseDTO(
+                "UNAUTHORIZED",
+                mensagem,
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErroResponseDTO> handleAcessoNegado(AccessDeniedException ex, HttpServletRequest request) {
+        String mensagem = "Acesso negado";
+
+        var erro = new ErroResponseDTO(
+                "FORBIDDEN",
+                mensagem,
+                List.of(),
+                LocalDateTime.now(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
     }
 }
