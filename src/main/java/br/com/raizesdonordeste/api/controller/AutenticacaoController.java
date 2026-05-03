@@ -4,6 +4,7 @@ import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import br.com.raizesdonordeste.api.service.autenticacao.dto.DadosLoginDTO;
 import br.com.raizesdonordeste.api.service.autenticacao.dto.TokenResponseDTO;
 import br.com.raizesdonordeste.api.infrastructure.security.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name = "Autenticações", description = "Operações relacionadas às autenticações")
 public class AutenticacaoController {
 
     private final TokenService tokenService;

@@ -7,6 +7,7 @@ import br.com.raizesdonordeste.api.service.pedido.dto.PedidoRequestDTO;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoResponseDTO;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoStatusRequestDTO;
 import br.com.raizesdonordeste.api.service.pedido.dto.PedidoStatusResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/pedidos")
+@Tag(name = "Pedidos", description = "Operações relacionadas aos pedidos")
 public class PedidoController {
 
     private final PedidoService pedidoService;

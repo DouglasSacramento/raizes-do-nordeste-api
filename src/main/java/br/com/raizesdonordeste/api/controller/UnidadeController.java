@@ -4,6 +4,7 @@ import br.com.raizesdonordeste.api.service.unidade.UnidadeService;
 import br.com.raizesdonordeste.api.service.unidade.dto.UnidadeDetalhamentoResponseDTO;
 import br.com.raizesdonordeste.api.service.unidade.dto.UnidadeRequestDTO;
 import br.com.raizesdonordeste.api.service.unidade.dto.UnidadeResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/unidades")
 @RequiredArgsConstructor
+@Tag(name = "Unidades", description = "Operações relacionadas às unidades")
 public class UnidadeController {
 
     private final UnidadeService unidadeService;

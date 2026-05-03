@@ -3,6 +3,7 @@ package br.com.raizesdonordeste.api.controller;
 import br.com.raizesdonordeste.api.service.cliente.ClienteService;
 import br.com.raizesdonordeste.api.service.cliente.dto.ClienteRequestDTO;
 import br.com.raizesdonordeste.api.service.cliente.dto.ClienteResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/clientes")
 @RequiredArgsConstructor
+@Tag(name = "Clientes", description = "Operações relacionadas aos clientes")
 public class ClienteController {
 
     private final ClienteService clienteService;

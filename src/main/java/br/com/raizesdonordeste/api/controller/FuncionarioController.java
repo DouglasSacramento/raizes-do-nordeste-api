@@ -3,6 +3,7 @@ package br.com.raizesdonordeste.api.controller;
 import br.com.raizesdonordeste.api.service.funcionario.FuncionarioService;
 import br.com.raizesdonordeste.api.service.funcionario.dto.FuncionarioRequestDTO;
 import br.com.raizesdonordeste.api.service.funcionario.dto.FuncionarioResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/funcionarios")
 @RequiredArgsConstructor
+@Tag(name = "Funcionários", description = "Operações relacionadas aos funcionários")
 public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;

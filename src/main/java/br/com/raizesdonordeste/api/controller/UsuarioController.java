@@ -1,6 +1,7 @@
 package br.com.raizesdonordeste.api.controller;
 
 import br.com.raizesdonordeste.api.service.usuario.UsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
+@Tag(name = "Usuários", description = "Operações relacionadas aos usuários")
 public class UsuarioController {
 
     private final UsuarioService service;

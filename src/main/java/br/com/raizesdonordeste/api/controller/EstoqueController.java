@@ -5,6 +5,7 @@ import br.com.raizesdonordeste.api.domain.usuario.Usuario;
 import br.com.raizesdonordeste.api.service.estoque.EstoqueService;
 import br.com.raizesdonordeste.api.service.estoque.dto.EstoqueRequestDTO;
 import br.com.raizesdonordeste.api.service.estoque.dto.EstoqueResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/estoque")
 @RequiredArgsConstructor
+@Tag(name = "Estoques", description = "Operações relacionadas aos estoques")
 public class EstoqueController {
 
     private final EstoqueService estoqueService;

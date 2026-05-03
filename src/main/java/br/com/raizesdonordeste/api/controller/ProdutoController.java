@@ -4,6 +4,7 @@ import br.com.raizesdonordeste.api.service.produto.ProdutoService;
 import br.com.raizesdonordeste.api.service.produto.dto.ProdutoDetalhamentoResponseDTO;
 import br.com.raizesdonordeste.api.service.produto.dto.ProdutoRequestDTO;
 import br.com.raizesdonordeste.api.service.produto.dto.ProdutoResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/produtos")
 @RequiredArgsConstructor
+@Tag(name = "Produtos", description = "Operações relacionadas aos produtos")
 public class ProdutoController {
 
     private final ProdutoService produtoService;
