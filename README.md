@@ -32,9 +32,11 @@ docker-compose up -d
 ```
 
 ### 5. Executando a aplicação
-Após configurar o .env e subir o banco via Docker, execute o comando abaixo:
+Após configurar o `.env` e subir o banco via Docker, execute o comando abaixo utilizando o Maven Wrapper que já vem incluso no projeto:
+
+**No Windows:**
 ```bash
-mvn spring-boot:run
+.\mvnw spring-boot:run
 ```
 ⚠️ Nota: Caso a aplicação apresente "Connection Refused", certifique-se de que o contêiner do Docker 
 está rodando na porta 5432.
