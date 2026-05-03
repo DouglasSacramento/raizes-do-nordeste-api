@@ -43,29 +43,49 @@ está rodando na porta 5432.
 
 ---
 
-🌱 Migrations e Seeder
-Para facilitar a validação pelo avaliador, o projeto foi configurado com automação completa de dados iniciais:
+🌱 Migrations e Seeder (Fluxo Operacional)
 
-### 1. Flyway Migrations: 
+Para facilitar e demonstrar o funcionamento real da operação multicanal,
+o projeto conta com automação completa de infraestrutura e dados iniciais:
+
+### 1. Flyway Migrations:
 Ao iniciar a aplicação, o Flyway criará automaticamente todas as tabelas e relacionamentos
 necessários no banco de dados PostgreSQL, seguindo os scripts da pasta db/migration.
 
-### 2. Database Seeder: 
-Logo após a inicialização, a classe DatabaseSeeder irá popular automaticamente o banco de dados com:
-* Unidades físicas (ex: Matriz).
-* Produtos do cardápio e carga inicial de estoque (com controle de versão para testes de concorrência).
-* Um usuário/cliente padrão para testes.
+### 2. Database Seeder e Perfis de Acesso (Roles):
+Logo após a inicialização, a classe DatabaseSeeder irá popular automaticamente o banco de dados
+com a estrutura mínima para testar as regras de negócio e a segregação de funções. 
+O sistema simula a seguinte hierarquia:
+
+* ADMIN (A Rede): Responsável por criar as unidades físicas (Filiais), 
+definir o catálogo geral de produtos (Cardápio) e cadastrar os funcionários de alto nível (Gerentes).
+
+* GERENTE (A Filial): Responsável por gerenciar a sua unidade específica, 
+o que inclui o abastecimento rigoroso do estoque local para habilitar as vendas.
+
+* CLIENTE: O consumidor final que realiza os pedidos consumindo os produtos disponibilizados.
+
+Para facilitar os testes, o Seeder já cadastra unidades (Matriz e Centro), produtos (Baião e Tapioca), 
+abastece o estoque inicial e cria contas prontas para uso.
 
 **Credenciais de Acesso Geradas Automaticamente:**
-Para testar os endpoints restritos (como criar pedidos), utilize as seguintes credenciais 
-na rota /api/v1/auth/login para obter o Token JWT:
+Utilize os e-mails abaixo na rota /api/v1/auth/login para obter o Token JWT e testar os diferentes níveis de permissão da API:
 
-Login: cliente@email.com
-Senha: 123456
+* **Perfil Administrador (Acesso Total):**
+    * **Login:** admin@email.com
+    * **Senha:** 123456
+
+* **Perfil Gerente (Ação Requerida - Teste Prático):**
+    * *O Seeder intencionalmente não cria um gerente padrão.* Como primeiro passo prático, faça login com a conta de Administrador e utilize a rota de registro de funcionários (`POST /api/v1/funcionarios/registrar`) para criar o seu primeiro usuário com a role `GERENTE`. Com essa nova conta criada, faça login novamente para testar as funções exclusivas gerenciais, como o abastecimento de estoque da sua unidade!
+
+* **Perfil Cliente (Criar Pedidos):**
+    * **Login:** cliente@email.com
+    * **Senha:** 123456
 
 ---
 
 📖 Documentação e Testes
+
 Você terá acesso às seguintes interfaces com a aplicação no ar:
 
 ### 1. Documentação Swagger (OpenAPI):
@@ -76,4 +96,4 @@ Na raiz deste repositório, você encontrará o arquivo Raizes_do_Nordeste_Postm
 Importe este arquivo no seu Postman para ter acesso a todos os testes mapeados no plano de testes do projeto 
 (Caminhos Felizes e Tratamentos de Erro).
 
-Desenvolvido por Douglas Jeronimo do Sacramento - RU: 4742114
+*Desenvolvido por Douglas Jeronimo do Sacramento - RU: 4742114*

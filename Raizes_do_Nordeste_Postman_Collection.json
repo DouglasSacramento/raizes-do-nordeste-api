@@ -219,7 +219,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"login\": \"admin@raizes.com\",\r\n    \"senha\": \"123456\"\r\n}",
+              "raw": "{\r\n    \"login\": \"admin@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

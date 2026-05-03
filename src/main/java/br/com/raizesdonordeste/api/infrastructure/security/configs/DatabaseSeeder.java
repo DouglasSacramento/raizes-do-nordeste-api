@@ -29,6 +29,17 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (!usuarioRepository.existsByLogin("admin@email.com")) {
+
+            Usuario admin = new Usuario();
+            admin.setLogin("admin@email.com");
+            admin.setSenha(passwordEncoder.encode("123456"));
+            admin.setRole(Role.ADMIN);
+
+            usuarioRepository.save(admin);
+            System.out.println("✅ Usuário ADMIN padrão criado com sucesso!");
+        }
+
         if (unidadeRepository.count() > 0) {
             System.out.println("Banco de dados já está populado. Pulando Seeder.");
             return;
