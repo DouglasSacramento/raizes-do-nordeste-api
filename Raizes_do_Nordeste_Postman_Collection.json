@@ -8,6 +8,1233 @@
   },
   "item": [
     {
+      "name": "Testes",
+      "item": [
+        {
+          "name": "T01",
+          "item": [
+            {
+              "name": "Logar (etapa 1)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T02",
+          "item": [
+            {
+              "name": "buscar (etapa 1)",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// Necessário remover o token caso esteja presente na requisição.\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pedidos",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pedidos"
+                  ],
+                  "query": [
+                    {
+                      "key": "canalPedido",
+                      "value": "TOTEM",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T03",
+          "item": [
+            {
+              "name": "Logar (etapa 1)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "registrar (etapa 2)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"Ciclano Souza\",\r\n    \"cpf\": \"58293340037\",\r\n    \"dataNasc\": \"1990-04-18\",\r\n    \"dataAdmissao\": \"2022-04-15\",\r\n    \"login\": \"ciclano@email.com\",\r\n    \"senha\": \"123456\",\r\n    \"role\": \"GERENTE\",\r\n    \"aceiteLgpd\": true,\r\n    \"unidade\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/funcionarios/registrar",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "funcionarios",
+                    "registrar"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T04",
+          "item": [
+            {
+              "name": "Logar (etapa 1)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "criar (etapa 2)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"unidadeId\": 1,\r\n  \"exigeTroco\": false,\r\n  //\"canal\": \"TOTEM\", \r\n  \"metodoPagamento\": \"PIX\",\r\n  \"carrinho\": [\r\n    {\r\n      \"produtoId\": 1,\r\n      \"quantidade\": 3\r\n    },\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 2\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pedidos",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pedidos"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T05",
+          "item": [
+            {
+              "name": "registrar (etapa 1)",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"Zezinho da Silva\",\r\n    \"cpf\": \"93767247046\",\r\n    \"dataNasc\": \"1998-09-05\",\r\n    \"aceiteLgpd\": true,\r\n    \"login\": \"zezinhoemail.com\",\r\n    //\"login\": \"zezinho@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/clientes/registrar",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "clientes",
+                    "registrar"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T06",
+          "item": [
+            {
+              "name": "Logar (etapa 1)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "criar (etapa 2)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"unidadeId\": 1,\r\n  \"exigeTroco\": false,\r\n  \"canal\": \"APP\", \r\n  \"metodoPagamento\": \"PIX\",\r\n  \"carrinho\": [\r\n    {\r\n      \"produtoId\": 1,\r\n      \"quantidade\": 1\r\n    },\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pedidos",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pedidos"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T07",
+          "item": [
+            {
+              "name": "Logar (etapa 1)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "criar (etapa 2)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"unidadeId\": 1,\r\n  \"exigeTroco\": false,\r\n  \"canal\": \"APP\", \r\n  \"metodoPagamento\": \"PIX\",\r\n  \"carrinho\": [\r\n    {\r\n      \"produtoId\": 3, //id inexistente\r\n      \"quantidade\": 1\r\n    },\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pedidos",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pedidos"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T08",
+          "item": [
+            {
+              "name": "Logar (etapa 1)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "criar (etapa 2)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"unidadeId\": 2,\r\n  \"exigeTroco\": false,\r\n  \"canal\": \"APP\", \r\n  \"metodoPagamento\": \"PIX\",\r\n  \"carrinho\": [\r\n    {\r\n      \"produtoId\": 1,\r\n      \"quantidade\": 25 //Quantidade > estoque\r\n    },\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 56 //Quantidade > estoque\r\n    }\r\n  ]\r\n}\r\n\r\n// Realize o pagamento deste pedido usando o ID gerado para ver o erro.",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pedidos",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pedidos"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "processar (etapa 3)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// ** Se o pagamento for RECUSADO, basta enviar novamente a requisição até acontecer o ERRO. **\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pagamentos/pedidos/6/processar",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pagamentos",
+                    "pedidos",
+                    "6",
+                    "processar"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T09",
+          "item": [
+            {
+              "name": "Logar (etapa 1)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"admin@email.com\",\r\n    \"senha\": \"123456\"\r\n}\r\n\r\n//Logar como ADMIN para criar um funcionário com a role GERENTE.",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "registrar (etapa 2)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nome\": \"Gerente da Silva\",\r\n    \"cpf\": \"58293340037\",\r\n    \"dataNasc\": \"1990-04-18\",\r\n    \"dataAdmissao\": \"2022-04-15\",\r\n    \"login\": \"gerente@email.com\",\r\n    \"senha\": \"123456\",\r\n    \"role\": \"GERENTE\", //É necessário ser GERENTE\r\n    \"aceiteLgpd\": true,\r\n    \"unidade\": 2 //Unidade de referência do gerente\r\n}\r\n\r\n//É necessário estar logado como ADMIN (conforme orientado na etapa anterior).\r\n\r\n//A próxima etapa é logar como GERENTE",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/funcionarios/registrar",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "funcionarios",
+                    "registrar"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Logar (etapa 3)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"gerente@email.com\",\r\n    \"senha\": \"123456\"\r\n}\r\n\r\n//Logar como GERENTE para abastecer a sua unidade de origem (neste caso é a MATRIZ).",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "abastecer (etapa 4)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"produtoId\": 1,\r\n  \"quantidadeNova\": 10\r\n}\r\n\r\n//Abastece o estoque do produtoId 1",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/estoque/abastecer",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "estoque",
+                    "abastecer"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "abastecer (etapa 5)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"produtoId\": 2,\r\n  \"quantidadeNova\": 10\r\n}\r\n\r\n//Abastece o estoque do produtoId 2",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/estoque/abastecer",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "estoque",
+                    "abastecer"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Logar (etapa 6)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Captura a resposta JSON\r",
+                      "const resposta = pm.response.json();\r",
+                      "\r",
+                      "// Armazena o valor do campo \"token\" na variável de ambiente\r",
+                      "pm.environment.set(\"token\", resposta.token);\r",
+                      "\r",
+                      "console.log(\"Token capturado e salvo!\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}\r\n\r\n// Logar como cliente para realizar um pedido novo após abastecimento da unidade.",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "criar (etapa 7)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"unidadeId\": 2,\r\n  \"exigeTroco\": false,\r\n  \"canal\": \"APP\", \r\n  \"metodoPagamento\": \"PIX\",\r\n  \"carrinho\": [\r\n    {\r\n      \"produtoId\": 1,\r\n      \"quantidade\": 5\r\n    },\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 6\r\n    }\r\n  ]\r\n}\r\n\r\n// Realize o pagamento deste pedido informando o ID gerado neste novo pedido lá em pagamento.",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pedidos",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pedidos"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "processar (etapa 8)",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// Informe aqui o ID do pedido realizado na etapa anterior.\r\n\r\n// ** Se o pagamento for RECUSADO, basta enviar novamente a requisição. **\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/pagamentos/pedidos/INFORME O ID AQUI/processar",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "pagamentos",
+                    "pedidos",
+                    "INFORME O ID AQUI",
+                    "processar"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "T10 - Pode ser observado nos testes T08 e T09",
+          "item": []
+        }
+      ]
+    },
+    {
       "name": "Pedido",
       "item": [
         {
@@ -107,7 +1334,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/v1/pedidos?canalPedido=TOTEM",
+              "raw": "http://localhost:8080/api/v1/pedidos",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -121,7 +1348,8 @@
               "query": [
                 {
                   "key": "canalPedido",
-                  "value": "TOTEM"
+                  "value": "TOTEM",
+                  "disabled": true
                 }
               ]
             }
@@ -148,6 +1376,15 @@
             },
             "method": "POST",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n// Informe aqui o ID do pedido realizado na etapa anterior.\r\n\r\n// ** Se o pagamento for RECUSADO, basta enviar novamente a requisição. **\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "http://localhost:8080/api/v1/pagamentos/pedidos/1/processar",
               "protocol": "http",
@@ -219,7 +1456,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"login\": \"admin@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
+              "raw": "{\r\n    \"login\": \"cliente@email.com\",\r\n    \"senha\": \"123456\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -685,7 +1922,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"produtoId\": 1,\r\n  \"quantidadeNova\": 10\r\n}",
+              "raw": "{\r\n  \"produtoId\": 2,\r\n  \"quantidadeNova\": 10\r\n}\r\n\r\n//Abastece o estoque do produtoId 2",
               "options": {
                 "raw": {
                   "language": "json"
